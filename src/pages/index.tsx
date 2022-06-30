@@ -1,6 +1,6 @@
 
 import styles from './home.module.scss'
-import { GetStaticProps } from 'next'
+import { GetServerSideProps, GetStaticProps } from 'next'
 import Head from 'next/head'
 import { SubscribeButton } from '../components/SubscribeButton/indext'
 import { Product, StripeApi } from '../services/stripe'
@@ -38,4 +38,7 @@ export const getStaticProps: GetStaticProps = async () => {
     },
     revalidate: 60 * 60 * 24, // 24 hours
   }
+
 }
+
+
