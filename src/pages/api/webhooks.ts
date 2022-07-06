@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Readable } from "stream";
 import Stripe from "stripe";
 import { StripeApi } from "../../services/stripe";
+import { saveSubscription } from "./_lib/manageSubscription";
 
 async function buffer(readable: Readable) {
   const chunks = [];
@@ -16,7 +17,11 @@ export const config = {
     bodyParser: false,
   },
 };
-const relevantEvents = new Set(["checkout.session.completed"]);
+const relevantEvents = new Set([
+  "checkout.session.completed",
+  "customer.subscription.updated",
+  "customer.subscription.deleted",
+]);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
@@ -40,13 +45,33 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (relevantEvents.has(type)) {
       try {
         switch (type) {
+          case "customer.subscription.updated":
+
+          case "customer.subscription.deleted":
+            const subscription = event.data.object as Stripe.Subscription;
+            await saveSubscription(
+              subscription.id.toString(),
+              subscription.customer.toString(),
+              false
+            );
+
+            break;
+
           case "checkout.session.completed":
+            const checkoutSession = event.data
+              .object as Stripe.Checkout.Session;
+            console.log("aq");
+            await saveSubscription(
+              checkoutSession.subscription?.toString() || "",
+              checkoutSession.customer?.toString() || "",
+              true
+            );
             break;
           default:
             throw new Error(`Unknown event type: ${type}`);
         }
       } catch (error) {
-        return res.json({error:'webhook error'});
+        return res.json({ error: "webhook error" });
       }
     }
 
