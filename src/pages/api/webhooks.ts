@@ -31,7 +31,8 @@ export default async function webHooks(
     const buf = await buffer(req);
     const secret = req.headers["stripe-signature"] || "";
     let event: Stripe.Event;
-
+    console.log("Received webhook");
+    console.log(secret,secret)
     try {
       const stripeApi = new StripeApi();
       event = stripeApi.stripe.webhooks.constructEvent(
