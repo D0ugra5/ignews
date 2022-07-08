@@ -17,6 +17,7 @@ export const config = {
     bodyParser: false,
   },
 };
+
 const relevantEvents = new Set([
   "checkout.session.completed",
   "customer.subscription.updated",
@@ -28,24 +29,32 @@ export default async function webHooks(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const buf = await buffer(req);
+    console.log("dentro do webhook")
     const secret = req.headers["stripe-signature"] || "";
+    const buf = await buffer(req);
     let event: Stripe.Event;
+   
     try {
+      console.log("dentro do try")
+      
+      
       const stripeApi = new StripeApi();
       event = stripeApi.stripe.webhooks.constructEvent(
         buf,
         secret,
         process.env.STRIPE_WEBHOOK_SECRET || ""
-      );
+        );
+    
     } catch (err) {
-      console.log(err);
+     
       return res.status(400).send(`WebHook Error: ${err}`);
     }
 
     const { type } = event;
     if (relevantEvents.has(type)) {
       try {
+      console.log("dentro do segundo try")
+
         switch (type) {
           case "customer.subscription.updated":
 
@@ -62,7 +71,6 @@ export default async function webHooks(
           case "checkout.session.completed":
             const checkoutSession = event.data
               .object as Stripe.Checkout.Session;
-            console.log("aq");
             await saveSubscription(
               checkoutSession.subscription?.toString() || "",
               checkoutSession.customer?.toString() || "",
