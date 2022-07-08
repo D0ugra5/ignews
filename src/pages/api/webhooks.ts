@@ -24,7 +24,7 @@ const relevantEvents = new Set([
   "customer.subscription.deleted",
 ]);
 
-export const webHook = async (req: NextApiRequest, res: NextApiResponse) => {
+export const webHooks = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     console.log("dentro do webhook");
     const secret = req.headers["stripe-signature"]!;
