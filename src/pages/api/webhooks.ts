@@ -41,8 +41,8 @@ export const webHook = async (req: NextApiRequest, res: NextApiResponse) => {
         process.env.STRIPE_WEBHOOK_SECRET!
       );
     } catch (err) {
-      console.log("dentro do catch");
       console.log(err);
+      console.log("dentro do catch");
       return res.status(400).send(`WebHook Error: ${err}`);
     }
 
