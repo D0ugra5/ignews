@@ -3,7 +3,7 @@ import { getSession } from "next-auth/react";
 
 import { StripeApi } from "../../services/stripe";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export const subscribe =  async (req: NextApiRequest, res: NextApiResponse) => {
   console.log("aqu")
   if (req.method === "POST") {
     const session = await getSession({ req });
