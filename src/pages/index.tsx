@@ -1,9 +1,10 @@
 
 import styles from './home.module.scss'
-import { GetServerSideProps, GetStaticProps } from 'next'
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { SubscribeButton } from '../components/SubscribeButton/indext'
 import { Product, StripeApi } from '../services/stripe'
+import Image from 'next/image'
 
 export default function Home(props: Product) {
   return (
@@ -21,7 +22,12 @@ export default function Home(props: Product) {
           </p>
           <SubscribeButton priceId={props.priceId} />
         </section>
-        <img src="/images/avatar.svg" alt="girl coding" />
+        <Image 
+        height={840} 
+        width={400} 
+        src="/images/avatar.svg" 
+        alt="girl coding" 
+        />
       </main>
     </>
 

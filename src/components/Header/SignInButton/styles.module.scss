@@ -1,42 +1,57 @@
-.signInButton{
-    height: 3rem;
-    border-radius: 3rem;
-    background: var(--gray-850);
-    border: 0;
-    padding: 0 1.5rem;
+.signInButton {
+  height: 3rem;
+  border-radius: 3rem;
+  background: var(--gray-850);
+  border: 0;
+  padding: 0 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--white);
+  font-weight: bold;
+  &.img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 25px;
+  }
+
+  img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 25px;
+  }
+  img:first-child {
+    margin-right: 1rem;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  svg:first-child {
+    margin: 1rem;
+  }
+  svg.closeIcon {
+    margin-left: 1rem;
+  }
+  transition: filter 0.2s;
+  &:hover {
+    filter: brightness(0.9);
+  }
+}
+
+.imglogo {
+
+   
+  display: flex;
+  margin-right: 1rem;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 252px;
 
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: var(--white);
-    font-weight: bold;
-
-    img{
-        width: 2.5rem;
-        height:  2.5rem;
-        border-radius: 25px;  
-       
-    
-    }
-    img:first-child{
-        margin-right: 1rem;
-    }
-
-    svg{
-        width: 20px;
-        height: 20px;
-    }
-
-    svg:first-child{
-        margin: 1rem;
-    }
-    svg.closeIcon{
-        margin-left: 1rem;
-    }
-    transition: filter 0.2s;
-    &:hover{
-        filter: brightness(0.9);
-    }
 }

@@ -29,7 +29,7 @@ export default function PostPreview({ post }: PostProps) {
         if (data?.userActiveSubscription) {
             router.push(`/posts/${post.slug}`);
         }
-    }, [data]);
+    }, [data,post.slug]);
     return (
         <>
             <Head>
@@ -51,7 +51,7 @@ export default function PostPreview({ post }: PostProps) {
         </>
     )
 }
-export const getStaticPaths : GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
     return {
         paths: [],
         fallback: 'blocking'
