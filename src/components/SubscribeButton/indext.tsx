@@ -17,8 +17,6 @@ export function SubscribeButton({ priceId }: SubscribeButtonProps) {
     const router = useRouter();
 
     async function handleSubscribe() {
-        console.log(data);
-
         if (status != "authenticated") {
             signIn('github');
             return;
