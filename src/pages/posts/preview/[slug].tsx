@@ -1,11 +1,15 @@
 
-import { GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { getPrismicClient } from '../../../services/prismic';
 import { RichText } from 'prismic-dom';
 import Head from 'next/head';
 
 
 import styles from '../post.module.scss';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 interface PostProps {
     post: {
@@ -19,6 +23,13 @@ interface PostProps {
 
 
 export default function PostPreview({ post }: PostProps) {
+    const router = useRouter();
+    const { data } = useSession();
+    useEffect(() => {
+        if (data?.userActiveSubscription) {
+            router.push(`/posts/${post.slug}`);
+        }
+    }, [data]);
     return (
         <>
             <Head>
@@ -30,11 +41,17 @@ export default function PostPreview({ post }: PostProps) {
                     <time>{post.updateAt}</time>
                     <div className={`${styles.postContent} ${styles.previewContent}`} dangerouslySetInnerHTML={{ __html: post.content }} />
                 </article>
+                <div className={styles.continueReading}>
+                    Wanna continue reading?
+                    <Link href="/">
+                        <a >Subscribe Now 😇</a>
+                    </Link>
+                </div>
             </main>
         </>
     )
 }
-export const getStaticPaths = () => {
+export const getStaticPaths : GetStaticPaths = async () => {
     return {
         paths: [],
         fallback: 'blocking'
@@ -51,7 +68,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const post = {
         slug,
         title: RichText.asText(response.data.title),
-        content: RichText.asHtml(response.data.content.splice(0,3)),
+        content: RichText.asHtml(response.data.content.splice(0, 3)),
         updateAt: new Date(response.last_publication_date).toLocaleDateString('pt-br', {
             day: '2-digit',
             month: 'long',
@@ -63,6 +80,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         props: {
             post
         },
+        revalidate: 60 * 30
 
     }
 }
