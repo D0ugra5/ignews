@@ -1,5 +1,3 @@
-import Link from 'next/Link'
-import { useRouter } from 'next/router';
 
 import { SignInButton } from './SignInButton';
 
