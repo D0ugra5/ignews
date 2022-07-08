@@ -51,6 +51,7 @@ export default async function webHooks(
     }
 
     const { type } = event;
+      console.log(type)
     if (relevantEvents.has(type)) {
       try {
       console.log("dentro do segundo try")
