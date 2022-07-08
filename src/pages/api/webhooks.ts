@@ -29,32 +29,31 @@ export default async function webHooks(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    console.log("dentro do webhook")
+    console.log("dentro do webhook");
     const secret = req.headers["stripe-signature"] || "";
     const buf = await buffer(req);
     let event: Stripe.Event;
-   
+
     try {
-      console.log("dentro do try")
-      
-      
+      console.log("dentro do try");
+
       const stripeApi = new StripeApi();
       event = stripeApi.stripe.webhooks.constructEvent(
         buf,
         secret,
         process.env.STRIPE_WEBHOOK_SECRET || ""
-        );
-    
+      );
     } catch (err) {
-     
+      console.log("dentro do catch");
+      console.log(err);
       return res.status(400).send(`WebHook Error: ${err}`);
     }
 
     const { type } = event;
-      console.log(type)
+    console.log(type);
     if (relevantEvents.has(type)) {
       try {
-      console.log("dentro do segundo try")
+        console.log("dentro do segundo try");
 
         switch (type) {
           case "customer.subscription.updated":
