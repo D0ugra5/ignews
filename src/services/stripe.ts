@@ -17,7 +17,7 @@ type User = {
 
 export class StripeApi {
   private price: string = "price_1Ie0JtBviOVVIhB8g0TdNz2v";
-  public stripe = new Stripe(process.env.STRIPE_API_KEY || "000000", {
+  public stripe = new Stripe(process.env.STRIPE_API_KEY!, {
     apiVersion: "2020-08-27",
     appInfo: {
       name: "Ignews",

@@ -24,13 +24,10 @@ const relevantEvents = new Set([
   "customer.subscription.deleted",
 ]);
 
-export default async function webHooks(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export const webHook = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     console.log("dentro do webhook");
-    const secret = req.headers["stripe-signature"] || "";
+    const secret = req.headers["stripe-signature"]!;
     const buf = await buffer(req);
     let event: Stripe.Event;
 
@@ -39,9 +36,9 @@ export default async function webHooks(
 
       const stripeApi = new StripeApi();
       event = stripeApi.stripe.webhooks.constructEvent(
-        buf,
+        buf.toString(),
         secret,
-        process.env.STRIPE_WEBHOOK_SECRET || ""
+        process.env.STRIPE_WEBHOOK_SECRET!
       );
     } catch (err) {
       console.log("dentro do catch");
@@ -90,4 +87,4 @@ export default async function webHooks(
     res.setHeader("Allow", "POST");
     res.status(405).end("Method not allowed");
   }
-}
+};
