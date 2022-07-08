@@ -88,3 +88,5 @@ export const webHooks = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(405).end("Method not allowed");
   }
 };
+
+export default webHooks;
